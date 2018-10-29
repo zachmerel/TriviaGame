@@ -2,12 +2,18 @@ body {
     background:  url(https://cdn.hipwallpaper.com/m/88/45/rwJzfm.jpg) no-repeat; 
     background-size: cover;
   }
+.choice:hover{
+    background-color:#007bff;
+}
 
+.start-button{
+    text-align: center;
+}
 .text{
     font-family: Arial, Helvetica, sans-serif;
-    align-content: center;
     text-align: center;
     color: black;
+    margin: 20px auto 20px auto;
 }
 
 .title-display{
