@@ -1,4 +1,6 @@
 $(document).ready(function () {
+    //hides timer until action is taken
+    $(".timerText").hide();
     //Object of Questions with objects of each question inside
     var questions = [
         {
@@ -47,44 +49,30 @@ $(document).ready(function () {
             image: '<img src="https://media.giphy.com/media/xUOwVmpPRPlosLm5vG/giphy.gif"/>'
         }
     ]
-
-    var correct;
-    var incorrect;
-    var unanswered;
+  
+    var correct = 0;
+    var incorrect = 0;
+    var unanswered = 0;
     var currentQuestion;
-
-    $(".timerText").hide();
-
-
-
-
-
-
-
-
-    // function timer(){
-    var number = 30;
+    var questionDuration = 30;
+    var timeInBetweenDuration = 10;
     var intervalId;
 
-    $(".start-button").on("click", function () {
+//start button, starts off game
+    $(".start-button-click").on("click", function () {
+         console.log("func 1")
         //   hides Start Button
         $(".start-button").hide();
         //Shows timer
         $(".timerText").show();
-        timer();
+        thirtySecondTimer();
         displayQuestions();
-
-        // for (const key in questions) {
-        // Q(questions[key]);
-        // choiceClicks();
-    
-
-
-
-
-        // 
+        console.log('correct:', correct)
+        console.log('incorret:', incorrect)
+        console.log('unanswered:', unanswered)
     });
-function displayQuestions() {
+ //function displays questions runs for loop as long as answered is false will run   
+function displayQuestions() { console.log("func 2")
     for ( var i = 0; i < questions.length; i++) {
         if(!questions[i].answered){
             $("#question").html(questions[i].text);
@@ -93,80 +81,82 @@ function displayQuestions() {
             $("#answerC").html(questions[i].wrongThree);
             $("#answerD").html(questions[i].wrongTwo); 
         }
+        //changes answered property to true and stopes to
         questions[i].answered = true;
-        console.log( questions[i].image );
         currentQuestion = questions[i];
-
                 break;
     }
     choiceClicks();
 }
-
-    //Functions displays questions and choices
-    function Q(obj) {
-     
-    }
     //function give clickability to choices
-    function choiceClicks() {
-        $("#answerA").on("click", function () {
-            stopTimer();
-            correct();
-            hidesChoices();
-            $('#gif').html(currentQuestion.image);
-            
+    function choiceClicks() { console.log("func 3")
+        $("#answerA").on("click", function () { console.log("func 4")
+            correctChoice();
+            console.log(incorrect)
         });
         $("#answerB").on("click", function () {
-            stopTimer();
-            hidesChoices();
             nope();
             $("#correctAnswer").html("The correct answer was: " + currentQuestion.correct);
             $('#gif').html(currentQuestion.image);
+            console.log(incorrect)
         });
         $("#answerC").on("click", function () {
-            stopTimer();
-            hidesChoices();
             nope();
             $("#correctAnswer").html("The correct answer was: " + currentQuestion.correct);
             $('#gif').html(currentQuestion.image);
         });
 
         $("#answerD").on("click", function () {
-            stopTimer();
-            hidesChoices();
             nope();
-            $("#correctAnswer").html("The correct answer was: " + currentQuestion.correct);
+            
             $('#gif').html(currentQuestion.image);
         });
 
 
     }
-    //function runs timer
-    function timer() {
+    //function runs  questionDuration timer
+    function thirtySecondTimer() {
         function run() {
             clearInterval(intervalId);
             intervalId = setInterval(decrement, 1000);
         }
         function decrement() {
-            number--;
-            $("#countdowntimer").html(number);
-            if (number === 0) {
+            questionDuration--;
+            $("#countdowntimer").html(questionDuration);
+            if (questionDuration === 0) {
                 stopTimer();
                 outOfTime();
-                hidesChoices();
-                $('#gif').html(currentQuestion.image);
+                
+                
+            }
+        }
+        run();
+    }
+
+       //function runs  timeInBetweenDuration timer
+       function timeInBetweenDurationTimer() {
+        function run() {
+            clearInterval(intervalId);
+            intervalId = setInterval(decrement, 1000);
+        }
+        function decrement() {
+            timeInBetweenDuration--;
+            $("#countdowntimer").html(timeInBetweenDuration);
+            if (timeInBetweenDuration === 0) {
+                stopTimer();
             }
         }
         run();
     }
 
     //function stops timer
-    function stopTimer() {
+    function stopTimer() { console.log("func 5")
         clearInterval(intervalId);
     }
 
-
     //function that hides choices
     function hidesChoices() {
+        stopTimer();
         $("#answerA").hide();
         $("#answerB").hide();
         $("#answerC").hide();
@@ -174,13 +164,24 @@ function displayQuestions() {
     }
     //function displays Nope if wrong anwser is selected
     function nope() {
+        hidesChoices();
         $("#question").html("Nope!");
+        $("#correctAnswer").html("The correct answer was: " + currentQuestion.correct);
+        $('#gif').html(currentQuestion.image);
+        incorrect++;
     }
-    function correct(){
+    function correctChoice (){ console.log("func 6")
+        hidesChoices();
         $("#question").html("Correct!");
+        $('#gif').html(currentQuestion.image);
+        correct++;
     }
     function outOfTime(){
+        hidesChoices();
         $("#question").html("Out of Time!");
+        $("#correctAnswer").html("The correct answer was: " + currentQuestion.correct);
+        $('#gif').html(currentQuestion.image);
+        unanswered++;
     }
 
 });
