@@ -2,6 +2,9 @@ body {
     background:  url(https://cdn.hipwallpaper.com/m/88/45/rwJzfm.jpg) no-repeat; 
     background-size: cover;
   }
+  /* .answers{
+      margin:  0 auto;
+  } */
 .choice:hover{
     background-color:#007bff;
 }
@@ -26,5 +29,6 @@ body {
     background: lightskyblue;
     border: solid black 2px;
     padding: 20px 20px 0px 20px;
-    margin-top:80px;
+    margin-top:40px;
+    margin-bottom: 400px;
 }
