@@ -1,6 +1,8 @@
 $(document).ready(function () {
     //hides timer until action is taken
     $(".timerText").hide();
+    //hides start over button until game is finished
+    $(".start-over-button").hide();
     //Object of Questions with objects of each question inside
     var questions = [
         {
@@ -60,7 +62,7 @@ $(document).ready(function () {
                 isCorrect: false
                 }
             ],
-            image: '<img src="https://media.giphy.com/media/3oEjI2hdCm6HODQsdq/giphy.giff"/>'
+            image: '<img src="https://media.giphy.com/media/8FhXc8w45aN32/giphy.gif"/>'
         },
         {
             answered: false,
@@ -101,10 +103,11 @@ $(document).ready(function () {
             image: '<img src="https://media.giphy.com/media/xUOwVmpPRPlosLm5vG/giphy.gif"/>'
         }
     ]
-
-    var correct = 0;
-    var incorrect = 0;
-    var unanswered = 0;
+var results = {
+    correct : 0,
+    incorrect : 0,
+    unanswered : 0,
+}
     var currentQuestion;
     var questionDuration = 30;
     var timeInBetweenDuration = 10;
@@ -116,13 +119,17 @@ $(document).ready(function () {
         $(".start-button").hide();
         //Shows timer
         $(".timerText").show();
-        thirtySecondTimer();
+        
         displayQuestions();
        
     });
     //function displays questions runs for loop as long as answered is false will run   
     function displayQuestions() { console.log("func 2")
         for (var i = 0; i < questions.length; i++) {
+            //displays results at end of quiz
+            if(!!questions[i].answered && results.incorrect+results.correct+results.unanswered == questions.length){
+                quizResults();
+            }
             if (!questions[i].answered) {
                 $("#question").html(questions[i].text);
                 for(var j = 0;j<questions[i].potentialAnswers.length;j++){
@@ -132,12 +139,14 @@ $(document).ready(function () {
                     $(".answers").append(potentialAnswer);
                 } 
                 questions[i].answered = true;
+                currentQuestion = questions[i];
+                console.log("currentQuestion:", currentQuestion);
+                thirtySecondTimer();
+                break;
             }
             //changes answered property to true and stopes to
             
-            currentQuestion = questions[i];
-            console.log("currentQuestion:", currentQuestion);
-            break;
+         
         }
     }
 
@@ -149,13 +158,13 @@ $(document).ready(function () {
         else{
             nope();
         }
-        console.log('correct:', correct)
-        console.log('incorret:', incorrect)
-        console.log('unanswered:', unanswered)
+        console.log('correct:', results.correct)
+        console.log('incorret:', results.incorrect)
+        console.log('unanswered:', results.unanswered)
     })
 
     //function runs  questionDuration timer
-    function thirtySecondTimer() {
+    function thirtySecondTimer() { console.log("func 2.1")
         function run() {
             clearInterval(intervalId);
             intervalId = setInterval(decrement, 1000);
@@ -166,13 +175,10 @@ $(document).ready(function () {
             if (questionDuration === 0) {
                 stopTimer();
                 outOfTime();
-
-
             }
         }
         run();
     }
-
     //function runs  timeInBetweenDuration timer
     function tenSecondTimer() {  console.log("func 7")
         function run() {
@@ -205,32 +211,51 @@ $(document).ready(function () {
     function nope() {
         hidesChoices();
         $("#question").html("Nope!");
-        $("#correctAnswer").html("The correct answer was: " + currentQuestion.correct);
+        $("#correctAnswer").html("The correct answer was: " + currentQuestion.potentialAnswers
+        .filter(val=>val.isCorrect)
+        [0]
+        .text);
         $('#gif').html(currentQuestion.image);
         tenSecondTimer();
-        incorrect++;
+        results.incorrect++;
     }
-    function correctChoice() {  console.log("func 4")
+    //function for correct answer choosen
+    function correctChoice() {  
         hidesChoices();
         $("#question").html("Correct!");
         $('#gif').html(currentQuestion.image);
         tenSecondTimer();
-        correct++;
+        results.correct++;
     }
-    function outOfTime() {
+    //function for when 30 second timer runs out
+    function outOfTime() { console.log("func 4")
         hidesChoices();
         $("#question").html("Out of Time!");
-        $("#correctAnswer").html("The correct answer was: " + currentQuestion.correct);
+        $("#correctAnswer").html("The correct answer was: " + currentQuestion.potentialAnswers
+        .filter(val=>val.isCorrect)
+        [0]
+        .text);
         $('#gif').html(currentQuestion.image);
-        unanswered++;
-        console.log('unanswered:', unanswered)
+        results.unanswered++;
+        tenSecondTimer();
+        console.log('unanswered:', results.unansweredunanswered)
     }
-
+    //function to reset the quiz
+    $(".start-over-button").click(function () { console.log('func 10')
+        location.reload();
+    });
+    //function to display results of the quiz
+    function quizResults(){ console.log('func 9')
+        $("#question").html("All done, here's how you did!");
+        $(".answers").html(`Correct: ${results.correct}, Incorrect: ${results.incorrect}, Unanswered: ${results.unanswered} `)
+        $(".start-over-button").show();
+    }
+    //function clears main container and should reset 30 second timer for next question (but doesn't right now)
     function nextQuestion() { console.log("func 8")
         $("#question").empty();
         $("#correctAnswer").empty();
         $('#gif').empty();
-        questionDuration = 30;
+        questionDuration = 31;
     }
 
 });

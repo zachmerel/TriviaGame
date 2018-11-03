@@ -5,12 +5,17 @@ body {
   /* .answers{
       margin:  0 auto;
   } */
+
 .choice:hover{
     background-color:#007bff;
 }
 
 .start-button{
     text-align: center;
+}
+.start-over-button{
+    text-align: center;
+    margin: 20px auto 20px auto;
 }
 .text{
     font-family: Arial, Helvetica, sans-serif;
