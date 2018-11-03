@@ -9,11 +9,11 @@ $(document).ready(function () {
             answered: false,
             text: "What address did Elwood Blues have on his Illinois driver's lisenese?",
             potentialAnswers: [
-                {text:"1060 W Addison St",
-                isCorrect: true
-                },
                 {text:"233 S Wacker Dr",
                 isCorrect: false
+                },
+                {text:"1060 W Addison St",
+                isCorrect: true
                 },
                 {text:"875 N Michigan Ave",
                 isCorrect: false
@@ -21,8 +21,6 @@ $(document).ready(function () {
                 {text:"141 W Jackson Blvd",
                 isCorrect: false
                 }
-
-
             ],
             image: '<img src="https://media.giphy.com/media/CwMKejp4V6Z1K/giphy.gif"/>'
         },
@@ -30,14 +28,14 @@ $(document).ready(function () {
             answered: false,
             text: "Who was the main villian in the film The Dark Knight?",
             potentialAnswers: [
-                {text:"Joker",
-                isCorrect: true
-                },
                 {text:"Penguin",
                 isCorrect: false
                 },
                 {text:"Bane",
                 isCorrect: false
+                },
+                {text:"Joker",
+                isCorrect: true
                 },
                 {text:"Scarecrow",
                 isCorrect: false
@@ -49,9 +47,6 @@ $(document).ready(function () {
             answered: false,
             text: "Which is not a place where Ferris and his friends visited while skipping school?",
             potentialAnswers: [
-                {text:"Navy Pier",
-                isCorrect: true
-                },
                 {text:"Wrigley Field",
                 isCorrect: false
                 },
@@ -60,7 +55,10 @@ $(document).ready(function () {
                 },
                 {text:"Art Institute of Chicago",
                 isCorrect: false
-                }
+                },
+                {text:"Navy Pier",
+                isCorrect: true
+                },
             ],
             image: '<img src="https://media.giphy.com/media/8FhXc8w45aN32/giphy.gif"/>'
         },
@@ -87,9 +85,6 @@ $(document).ready(function () {
             answered: false,
             text: "What is Will Smith's character's name in I, Robot?",
             potentialAnswers: [
-                {text:"Del Spooner",
-                isCorrect: true
-                },
                 {text:"Steven Hiller",
                 isCorrect: false
                 },
@@ -98,7 +93,10 @@ $(document).ready(function () {
                 },
                 {text:"Mike Lowrey",
                 isCorrect: false
-                }
+                },
+                {text:"Del Spooner",
+                isCorrect: true
+                },
             ],
             image: '<img src="https://media.giphy.com/media/xUOwVmpPRPlosLm5vG/giphy.gif"/>'
         }
@@ -112,22 +110,19 @@ var results = {
     var questionDuration = 30;
     var timeInBetweenDuration = 10;
     var intervalId;
-
     //start button, starts off game
     $(".start-button-click").on("click", function () { console.log("func 1")
         //   hides Start Button
         $(".start-button").hide();
         //Shows timer
-        $(".timerText").show();
-        
+        $(".timerText").show();  
         displayQuestions();
-       
     });
     //function displays questions runs for loop as long as answered is false will run   
     function displayQuestions() { console.log("func 2")
         for (var i = 0; i < questions.length; i++) {
             //displays results at end of quiz
-            if(!!questions[i].answered && results.incorrect+results.correct+results.unanswered == questions.length){
+            if(questions[i].answered && results.incorrect+results.correct+results.unanswered == questions.length){
                 quizResults();
             }
             if (!questions[i].answered) {
@@ -144,12 +139,8 @@ var results = {
                 thirtySecondTimer();
                 break;
             }
-            //changes answered property to true and stopes to
-            
-         
         }
     }
-
     $(document).on('click', '.choice', function(){ console.log("func 3")
         var isCorrect = $(this).attr("data-correct");
         if(isCorrect === 'true'){
@@ -162,7 +153,6 @@ var results = {
         console.log('incorret:', results.incorrect)
         console.log('unanswered:', results.unanswered)
     })
-
     //function runs  questionDuration timer
     function thirtySecondTimer() { console.log("func 2.1")
         function run() {
@@ -196,12 +186,10 @@ var results = {
         }
         run();
     }
-
     //function stops timer
     function stopTimer() {console.log("func 6")
         clearInterval(intervalId);
     }
-
     //function that hides choices
     function hidesChoices() {  console.log("func 5")
         stopTimer();
@@ -247,7 +235,9 @@ var results = {
     //function to display results of the quiz
     function quizResults(){ console.log('func 9')
         $("#question").html("All done, here's how you did!");
-        $(".answers").html(`Correct: ${results.correct}, Incorrect: ${results.incorrect}, Unanswered: ${results.unanswered} `)
+        $("#correct").html(`Correct: ${results.correct}`);
+        $("#incorrect").html(`Incorrect: ${results.incorrect} `); 
+        $("#unanswered").html(`Unanswered: ${results.unanswered}`);
         $(".start-over-button").show();
     }
     //function clears main container and should reset 30 second timer for next question (but doesn't right now)
@@ -257,5 +247,4 @@ var results = {
         $('#gif').empty();
         questionDuration = 31;
     }
-
 });
