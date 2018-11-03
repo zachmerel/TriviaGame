@@ -108,7 +108,7 @@ var results = {
 }
     var currentQuestion;
     var questionDuration = 30;
-    var timeInBetweenDuration = 10;
+    var timeInBetweenDuration = 5;
     var intervalId;
     //start button, starts off game
     $(".start-button-click").on("click", function () { console.log("func 1")
@@ -170,9 +170,9 @@ var results = {
         run();
     }
     //function runs  timeInBetweenDuration timer
-    function tenSecondTimer() {  console.log("func 7")
+    function fiveSecondTimer() {  console.log("func 7")
         function run() {
-            timeInBetweenDuration = 10;
+            timeInBetweenDuration = 5;
             clearInterval(intervalId);
             intervalId = setInterval(decrement, 1000);
         }
@@ -204,7 +204,7 @@ var results = {
         [0]
         .text);
         $('#gif').html(currentQuestion.image);
-        tenSecondTimer();
+        fiveSecondTimer();
         results.incorrect++;
     }
     //function for correct answer choosen
@@ -212,7 +212,7 @@ var results = {
         hidesChoices();
         $("#question").html("Correct!");
         $('#gif').html(currentQuestion.image);
-        tenSecondTimer();
+        fiveSecondTimer();
         results.correct++;
     }
     //function for when 30 second timer runs out
@@ -225,7 +225,7 @@ var results = {
         .text);
         $('#gif').html(currentQuestion.image);
         results.unanswered++;
-        tenSecondTimer();
+        fiveSecondTimer();
         console.log('unanswered:', results.unansweredunanswered)
     }
     //function to reset the quiz
